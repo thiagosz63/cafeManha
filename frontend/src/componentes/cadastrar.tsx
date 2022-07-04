@@ -2,6 +2,9 @@ import { ErrorMessage, Field, Form, Formik, FormikValues } from 'formik'
 import * as Yup from 'yup';
 import './style.css'
 import { pt } from 'yup-locale-pt';
+import { toast } from 'react-toastify';
+import { axiosPost, axiosPut } from 'api';
+import { validarCPF } from 'utils/validation';
 
 interface props {
     id?: string
@@ -9,65 +12,38 @@ interface props {
     nome?: string
     cpf?: string
     senha?: string
+    fechaModal: () => void
 }
 
-function Cadastrar(props: props) {
+export default function Cadastrar({
+    id, titulo = 'Cadastro', nome, cpf, senha, fechaModal }: props) {
 
-    const {
-        titulo = 'Cadastro', nome, cpf,
-         senha
-    } = props;
-
-       
     Yup.setLocale(pt);
 
     const handleSubmit = (Values: FormikValues) => {
+        if (id === undefined) {
+            axiosPost('/colaborador', Values)
+                .then(() => {
+                    toast.success('Dados inseridos com sucesso')
+                    fechaModal();
+                    //History.push('/loguin');
+                })
+                .catch(() => {
+                    toast.error("Erro ao cadastrar Colaborador")
+                });
+        } else {
+            axiosPut(`/colaborador/${id}`, Values)
+                .then(() => {
+                    toast.success('Dados Atualizados com sucesso')
+                    fechaModal();
+                })
+                .catch(() => {
+                    toast.error("Error: Sistema Indisponivel")
+                });
+        }
     }
 
-    function validarCPF(cpf: string) {
-        cpf = cpf.replace(/[^\d]+/g, '');
-        if (cpf === '') return false;
-        // Elimina CPFs invalidos conhecidos	
-        if (cpf.length !== 11 ||
-            cpf === "00000000000" ||
-            cpf === "11111111111" ||
-            cpf === "22222222222" ||
-            cpf === "33333333333" ||
-            cpf === "44444444444" ||
-            cpf === "55555555555" ||
-            cpf === "66666666666" ||
-            cpf === "77777777777" ||
-            cpf === "88888888888" ||
-            cpf === "99999999999")
-            return false;
-        // Valida 1o digito	
-        let add = 0;
-        for (let i = 0; i < 9; i++) {
-            add += parseInt(cpf.charAt(i)) * (10 - i);
-        }
-        let rev = 11 - (add % 11);
-        if (rev === 10 || rev === 11) {
-            rev = 0;
-        }
-        if (rev !== parseInt(cpf.charAt(9))) {
-            return false;
-        }
-        // Valida 2o digito	
-        add = 0;
-        for (let i = 0; i < 10; i++) {
-            add += parseInt(cpf.charAt(i)) * (11 - i);
-        }
-        rev = 11 - (add % 11);
-        if (rev === 10 || rev === 11) {
-            rev = 0;
-        }
-        if (rev !== parseInt(cpf.charAt(10))) {
-            return false;
-        }
-        return true;
-    }
-
-    const validations = Yup.object().shape({
+   const validations = Yup.object().shape({
         nome: Yup.string().required(' Nome é Obrigatório'),
         cpf: Yup.string().test("", " CPF Não Valido",
             (value) => validarCPF(value + '')).required(),
@@ -88,7 +64,7 @@ function Cadastrar(props: props) {
             </div>
 
             <Formik initialValues={{
-                nome: nome, cpf: cpf, senha: senha,ConfirmaSenha:senha
+                nome: nome, cpf: cpf, senha: senha, ConfirmaSenha: senha
             }}
                 onSubmit={handleSubmit} validationSchema={validations}>
                 <Form>
@@ -104,9 +80,9 @@ function Cadastrar(props: props) {
 
                     <div className="row mt-2 ml-2 mr-2">
                         <div className="col-md-12">
-                            <label>CPF*  
-                                <Field type="text"name='cpf'
-                                placeholder="CPF (Apenas número)"/>
+                            <label>CPF*
+                                <Field type="text" name='cpf'
+                                    placeholder="CPF (Apenas número)" />
                             </label>
                             <ErrorMessage component='span' name='cpf' />
                         </div>
@@ -145,5 +121,3 @@ function Cadastrar(props: props) {
         </div >
     );
 }
-
-export default Cadastrar;

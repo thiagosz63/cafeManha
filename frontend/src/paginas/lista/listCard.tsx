@@ -11,7 +11,7 @@ export default function ListCard({estadoBotao = true}: props) {
                     </th>
                     <td>Felipe </td>
                     <td>123456 </td>
-                    <td>Pão </td>
+                    <td>Queijo Mussarela</td>
                 </tr>
             </tbody>
     )

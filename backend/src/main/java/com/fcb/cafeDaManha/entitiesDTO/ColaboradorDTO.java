@@ -1,17 +1,13 @@
 package com.fcb.cafeDaManha.entitiesDTO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fcb.cafeDaManha.entities.Colaborador;
 
 public class ColaboradorDTO implements Serializable {
@@ -24,21 +20,18 @@ public class ColaboradorDTO implements Serializable {
 	private String nome;
 	@Column(unique = true)
 	private String cpf;
-	@JsonIgnore
+	
 	private String senha;
-
-	private List<ItensDTO> itens = new ArrayList<>();
 
 	public ColaboradorDTO() {
 	}
 
-	public ColaboradorDTO(Long id, String nome, String cpf, String senha, List<ItensDTO> itens) {
+	public ColaboradorDTO(Long id, String nome, String cpf, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.senha = senha;
-		this.itens = itens;
 	}
 
 	public ColaboradorDTO(Colaborador obj) {
@@ -46,11 +39,6 @@ public class ColaboradorDTO implements Serializable {
 		nome = obj.getNome();
 		cpf = obj.getCpf();
 		senha = obj.getSenha();
-		itens = obj.getItens().stream().map(x -> new ItensDTO(x)).collect(Collectors.toList());
-	}
-
-	public List<ItensDTO> getItens() {
-		return itens;
 	}
 
 	public Long getId() {
@@ -102,12 +90,5 @@ public class ColaboradorDTO implements Serializable {
 		return Objects.equals(cpf, other.cpf) && Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
 				&& Objects.equals(senha, other.senha);
 	}
-
-	@Override
-	public String toString() {
-		return "ColaboradorDTO [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", senha=" + senha + ", itens=" + itens
-				+ "]";
-	}
-	
 
 }

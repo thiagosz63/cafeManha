@@ -1,21 +1,12 @@
 package com.fcb.cafeDaManha.controllers;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.fcb.cafeDaManha.entities.Itens;
 import com.fcb.cafeDaManha.entitiesDTO.ItensDTO;
 import com.fcb.cafeDaManha.service.ItensService;
 
@@ -33,29 +24,5 @@ public class ItensController {
 			List<ItensDTO> list = itensService.findAll();
 			return ResponseEntity.ok().body(list);
 		}
-
-		@PostMapping
-		public ResponseEntity<ItensDTO> insert(@RequestBody ItensDTO dto) {
-			dto = itensService.insert(dto);
-
-			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId())
-					.toUri();
-			return ResponseEntity.created(uri).body(dto);
-		}
-
-		@DeleteMapping(value = "/{id}")
-		public ResponseEntity<Void> delete(@PathVariable Long id) {
-			itensService.delete(id);
-			return ResponseEntity.noContent().build();
-		}
-
-		@PutMapping(value = "/{id}")
-		public ResponseEntity<Void> update(@RequestBody ItensDTO objDto, @PathVariable Long id) {
-			Itens obj = itensService.fromDTO(objDto);
-			obj.setId(id);
-			obj = itensService.update(obj);
-			return ResponseEntity.noContent().build();
-		}
-
 	}
 }

@@ -3,12 +3,16 @@ package com.fcb.cafeDaManha.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.fcb.cafeDaManha.entities.enums.Status;
 
+@Entity
+@Table(name = "`itens`")
 public class Itens implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,6 +22,9 @@ public class Itens implements Serializable {
 	private Long  id;
 	private String nome;
 	private Status status;
+	
+	public Itens() {
+	}
 
 	public Itens(Long  id, String nome, Status status) {
 		super();

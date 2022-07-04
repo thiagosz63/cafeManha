@@ -1,62 +1,44 @@
 package com.fcb.cafeDaManha.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fcb.cafeDaManha.entities.Colaborador;
 import com.fcb.cafeDaManha.entitiesDTO.ColaboradorDTO;
-import com.fcb.cafeDaManha.repository.ColaboradorRepository;
+import com.fcb.cafeDaManha.repository.ColaboradorRepositorys;
 
+@Service
 public class ColaboradorService {
 
 	@Autowired
-	private ColaboradorRepository colaboradorRepository;
+	private ColaboradorRepositorys colaboradorRepository;
 
 	@Transactional(readOnly = true)
-	public List<ColaboradorDTO> findItensService() {
-		List<Colaborador> list = colaboradorRepository.findAllColaborador();
-		return list.stream().map(x -> new ColaboradorDTO(x)).collect(Collectors.toList());
+	public Page<ColaboradorDTO> buscarColaborador(Integer page, Integer linesPage, String direction, String orderBy) {
+
+		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction), orderBy);
+		Page<Colaborador> pages = colaboradorRepository.findAll(pageRequest);
+		return pages.map(x -> new ColaboradorDTO(x));
 	}
-	
+
+	@Transactional
+	public void insert(Colaborador obj) {
+		colaboradorRepository.iserir(obj.getCpf(), obj.getNome(), obj.getSenha());
+
+	}
+
 	@Transactional(readOnly = true)
-	public Colaborador findById(Long id) {
-		Optional<Colaborador> obj = colaboradorRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado " + id + ", tipo " + ColaboradorService.class.getName(), " " + id));
+	public ColaboradorDTO buscarbuscarPorParametro(String valor) {
+		Colaborador list = colaboradorRepository.buscarPorParametro(valor);
+		
+		return new ColaboradorDTO(list);
 	}
-	
-	@Transactional
-	public ColaboradorDTO insert (ColaboradorDTO dto) {
-		Colaborador colaborador = new Colaborador(null, dto.getNome(), dto.getCpf(), dto.getSenha());
-		colaborador = colaboradorRepository.save(colaborador);
-		return new ColaboradorDTO(colaborador);
-	}
-	
-	@Transactional
-	public void delete(Long id) {
-		colaboradorRepository.deleteById(id);
-	}
-	
-	@Transactional
-	public Colaborador update(Colaborador obj) {
-		Optional<Colaborador> optional = colaboradorRepository.findById(obj.getId());
-		Colaborador newColaborador = optional.get();
-		updateData(newColaborador, obj);
-		return colaboradorRepository.save(newColaborador);
-	}
-	
-	private void updateData(Colaborador newColaborador, Colaborador obj) {
-		newColaborador.setNome(obj.getNome());
-		newColaborador.setCpf(obj.getCpf());
-		newColaborador.setSenha(obj.getSenha());
-	}
-	
-	public Colaborador fromDTO(ColaboradorDTO objDTO ) {
+
+	public Colaborador fromDTO(ColaboradorDTO objDTO) {
 		return new Colaborador(objDTO.getId(), objDTO.getNome(), objDTO.getCpf(), objDTO.getSenha());
 	}
-
 }

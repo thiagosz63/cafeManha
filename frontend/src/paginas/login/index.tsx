@@ -7,69 +7,29 @@ import { ErrorMessage, Field, Form, Formik, FormikValues } from "formik";
 import * as Yup from 'yup';
 import Cadastrar from "componentes/cadastrar";
 import { pt } from "yup-locale-pt";
+import { validarCPF } from "../../utils/validation";
+import { axiosGet } from "api";
+import { toast } from "react-toastify";
+import { AxiosError, AxiosResponse } from 'axios';
 
-interface props {
-    id?: string
-    cpf?: string
-    password?: string
-}
-
-function Login(props: props) {
-    const {
-        cpf, password
-    } = props;
+function Login() {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     Yup.setLocale(pt);
+    const vccpf = "802.295.340-74"
 
     const handleSubmit = (values: FormikValues) => {
-    }
+        axiosGet(`/colaborador?valor=${vccpf}`)
+            .then(function (response: AxiosResponse) {
+                console.log(values.cpf)
+            })
+            .catch(function (error: AxiosError) {
+                toast.error("Cliente não Cadastrado")
 
-
-    function validarCPF(cpf: string) {
-        cpf = cpf.replace(/[^\d]+/g, '');
-        if (cpf === '') return false;
-        // Elimina CPFs invalidos conhecidos	
-        if (cpf.length !== 11 ||
-            cpf === "00000000000" ||
-            cpf === "11111111111" ||
-            cpf === "22222222222" ||
-            cpf === "33333333333" ||
-            cpf === "44444444444" ||
-            cpf === "55555555555" ||
-            cpf === "66666666666" ||
-            cpf === "77777777777" ||
-            cpf === "88888888888" ||
-            cpf === "99999999999")
-            return false;
-        // Valida 1o digito	
-        let add = 0;
-        for (let i = 0; i < 9; i++) {
-            add += parseInt(cpf.charAt(i)) * (10 - i);
-        }
-        let rev = 11 - (add % 11);
-        if (rev === 10 || rev === 11) {
-            rev = 0;
-        }
-        if (rev !== parseInt(cpf.charAt(9))) {
-            return false;
-        }
-        // Valida 2o digito	
-        add = 0;
-        for (let i = 0; i < 10; i++) {
-            add += parseInt(cpf.charAt(i)) * (11 - i);
-        }
-        rev = 11 - (add % 11);
-        if (rev === 10 || rev === 11) {
-            rev = 0;
-        }
-        if (rev !== parseInt(cpf.charAt(10))) {
-            return false;
-        }
-        return true;
+            })
     }
 
     const validations = Yup.object().shape({
@@ -80,7 +40,7 @@ function Login(props: props) {
 
     return (
         <div>
-            <Formik initialValues={{ cpf: cpf, password: password }}
+            <Formik initialValues={{}}
                 onSubmit={handleSubmit}
                 validationSchema={validations}>
                 <Form>
@@ -95,7 +55,6 @@ function Login(props: props) {
                                 <div className='login-caixa'>
                                     <Field type="text"
                                         name='cpf'
-                                        id='cpf'
                                         placeholder="CPF (Apenas número)" />
                                     <div>
                                         <ErrorMessage component='span' name='cpf' />
@@ -114,7 +73,11 @@ function Login(props: props) {
                                 </div>
                             </div>
 
-                            <input type="submit" name="" value="Login" />
+                            <button type="button"
+                                className="btnPersonal"
+                                onClick={handleSubmit}>
+                                Login
+                            </button>
 
                         </form>
                         <button type="button" className="btnPersonal"
@@ -140,7 +103,7 @@ function Login(props: props) {
                     </button>
                 </Modal.Header>
                 <Modal.Body>
-                    <Cadastrar />
+                    <Cadastrar fechaModal={handleClose} />
                 </Modal.Body>
             </Modal>
 

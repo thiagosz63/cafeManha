@@ -55,6 +55,7 @@ text-align: center;
 display: block}
 
 .btnPersonal{
+    width: 50%;
     background: #59238F;
     color: #fff;
     border-radius: 20px;

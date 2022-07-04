@@ -2,3 +2,23 @@
     text-align: center;
     text-decoration: underline;
 }
+
+.btnPersonalLista{
+    margin: 5px 0px 0px 10px;
+    background: #59238F;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer
+}
+td{
+    color: black;
+    font-weight: bold;
+}
+
+.containerPersonal {
+    text-align: center;
+    text-decoration: underline;
+}

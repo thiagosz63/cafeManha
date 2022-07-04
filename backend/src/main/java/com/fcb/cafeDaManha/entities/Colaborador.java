@@ -1,17 +1,17 @@
 package com.fcb.cafeDaManha.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+@Entity
+@Table(name = "`colaborador`")
 public class Colaborador implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -22,10 +22,11 @@ public class Colaborador implements Serializable {
 	private String nome;
 	@Column(unique = true)
 	private String cpf;
-	@JsonIgnore
-	private String senha;
 
-	private Set<Itens> itens = new HashSet<>();
+	private String senha;
+	
+	public Colaborador() {
+	}
 
 	public Colaborador(Long  id, String nome, String cpf, String senha) {
 		super();
@@ -33,10 +34,6 @@ public class Colaborador implements Serializable {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.senha = senha;
-	}
-
-	public Set<Itens> getItens() {
-		return itens;
 	}
 
 	public Long getId() {
