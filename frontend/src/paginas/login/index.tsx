@@ -8,26 +8,34 @@ import * as Yup from 'yup';
 import Cadastrar from "componentes/cadastrar";
 import { pt } from "yup-locale-pt";
 import { validarCPF } from "../../utils/validation";
-import { axiosGet } from "api";
 import { toast } from "react-toastify";
-import { AxiosError, AxiosResponse } from 'axios';
+import { useNavigate } from "react-router-dom";
+import { axiosGet } from "Api";
 
-function Login() {
+
+
+
+export default function Login() {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const historys = useNavigate();
 
-    Yup.setLocale(pt);
-    const vccpf = "802.295.340-74"
+    Yup.setLocale(pt);    
+    
 
     const handleSubmit = (values: FormikValues) => {
-        axiosGet(`/colaborador?valor=${vccpf}`)
-            .then(function (response: AxiosResponse) {
-                console.log(values.cpf)
+        axiosGet(`/colaborador?valor=${values.cpf}`)
+            .then((response) => {
+                if (response.data.senha === values.password) {
+                    historys('/lista');
+                } else{
+                    toast.warning("Usuario ou senha Invalidos")
+                }    
             })
-            .catch(function (error: AxiosError) {
-                toast.error("Cliente não Cadastrado")
+            .catch(() => {
+                toast.error("Colaborador não Cadastrado")
 
             })
     }
@@ -40,7 +48,7 @@ function Login() {
 
     return (
         <div>
-            <Formik initialValues={{}}
+            <Formik initialValues={{ cpf: "", password: "" }}
                 onSubmit={handleSubmit}
                 validationSchema={validations}>
                 <Form>
@@ -50,40 +58,28 @@ function Login() {
                             style={{ fontSize: 100, color: "orange" }}
                         />
                         <h3>Seja Bem-Vindo</h3>
-                        <form>
-                            <div className="inputBox">
-                                <div className='login-caixa'>
-                                    <Field type="text"
-                                        name='cpf'
-                                        placeholder="CPF (Apenas número)" />
-                                    <div>
-                                        <ErrorMessage component='span' name='cpf' />
-                                    </div>
-                                </div>
+                        <div>
+                            <label htmlFor='cpf'>CPF*</label>
+                            <Field id='cpf' placeholder='DIGITE SEU CPF'
+                                name='cpf' />
+                            <ErrorMessage component='span' name='cpf' />
+                        </div>
 
-                                <div className='login-caixa'>
-                                    <Field type='password'
-                                        name='password'
-                                        id='password'
-                                        placeholder='Digite sua Senha'
-                                    />
-                                    <div>
-                                        <ErrorMessage component='span' name='password' />
-                                    </div>
-                                </div>
-                            </div>
+                        <div>
+                            <label htmlFor='password'>SENHA*</label>
+                            <Field id='password' placeholder='DIGITE SUA SENHA'
+                                name='password' type='password' />
+                            <ErrorMessage component='span' name='password' />
+                        </div>
 
-                            <button type="button"
-                                className="btnPersonal"
-                                onClick={handleSubmit}>
-                                Login
+                        <input type="submit" className="btnPersonal" value="Login" />
+
+                        <div>
+                            <button className="btnPersonal"
+                                onClick={handleShow}>
+                                Cadastra-se
                             </button>
-
-                        </form>
-                        <button type="button" className="btnPersonal"
-                            onClick={handleShow}>
-                            Cadastra-se
-                        </button>
+                        </div>
                     </div>
                 </Form>
             </Formik>
@@ -110,4 +106,3 @@ function Login() {
         </div>
     )
 }
-export default Login;

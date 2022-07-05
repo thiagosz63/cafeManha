@@ -3,25 +3,24 @@ import * as Yup from 'yup';
 import './style.css'
 import { pt } from 'yup-locale-pt';
 import { toast } from 'react-toastify';
-import { axiosPost, axiosPut } from 'api';
+import { axiosPost, axiosPut } from 'Api';
 import { validarCPF } from 'utils/validation';
+import { Colaborador } from 'tipos/types';
 
 interface props {
-    id?: string
+    colaborador?: Colaborador
     titulo?: string
-    nome?: string
-    cpf?: string
     senha?: string
     fechaModal: () => void
 }
 
 export default function Cadastrar({
-    id, titulo = 'Cadastro', nome, cpf, senha, fechaModal }: props) {
+    titulo = 'Cadastro', colaborador, senha, fechaModal }: props) {
 
     Yup.setLocale(pt);
 
     const handleSubmit = (Values: FormikValues) => {
-        if (id === undefined) {
+        if (colaborador?.id === undefined) {
             axiosPost('/colaborador', Values)
                 .then(() => {
                     toast.success('Dados inseridos com sucesso')
@@ -32,7 +31,7 @@ export default function Cadastrar({
                     toast.error("Erro ao cadastrar Colaborador")
                 });
         } else {
-            axiosPut(`/colaborador/${id}`, Values)
+            axiosPut(`/colaborador/${colaborador.id}`, Values)
                 .then(() => {
                     toast.success('Dados Atualizados com sucesso')
                     fechaModal();
@@ -43,7 +42,7 @@ export default function Cadastrar({
         }
     }
 
-   const validations = Yup.object().shape({
+    const validations = Yup.object().shape({
         nome: Yup.string().required(' Nome é Obrigatório'),
         cpf: Yup.string().test("", " CPF Não Valido",
             (value) => validarCPF(value + '')).required(),
@@ -64,7 +63,8 @@ export default function Cadastrar({
             </div>
 
             <Formik initialValues={{
-                nome: nome, cpf: cpf, senha: senha, ConfirmaSenha: senha
+                nome: colaborador?.nome, cpf: colaborador?.cpf,
+                senha: colaborador?.senha, ConfirmaSenha: senha
             }}
                 onSubmit={handleSubmit} validationSchema={validations}>
                 <Form>

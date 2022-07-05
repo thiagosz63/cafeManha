@@ -34,7 +34,6 @@ public class ColaboradorService {
 	@Transactional(readOnly = true)
 	public ColaboradorDTO buscarbuscarPorParametro(String valor) {
 		Colaborador list = colaboradorRepository.buscarPorParametro(valor);
-		
 		return new ColaboradorDTO(list);
 	}
 
