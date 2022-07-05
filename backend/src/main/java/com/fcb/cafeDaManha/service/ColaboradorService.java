@@ -7,15 +7,15 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fcb.cafeDaManha.dto.ColaboradorDTO;
 import com.fcb.cafeDaManha.entities.Colaborador;
-import com.fcb.cafeDaManha.entitiesDTO.ColaboradorDTO;
-import com.fcb.cafeDaManha.repository.ColaboradorRepositorys;
+import com.fcb.cafeDaManha.repository.ColaboradorRepository;
 
 @Service
 public class ColaboradorService {
 
 	@Autowired
-	private ColaboradorRepositorys colaboradorRepository;
+	private ColaboradorRepository colaboradorRepository;
 
 	@Transactional(readOnly = true)
 	public Page<ColaboradorDTO> buscarColaborador(Integer page, Integer linesPage, String direction, String orderBy) {

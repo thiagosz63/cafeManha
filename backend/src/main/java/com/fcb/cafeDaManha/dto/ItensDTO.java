@@ -1,4 +1,4 @@
-package com.fcb.cafeDaManha.entitiesDTO;
+package com.fcb.cafeDaManha.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fcb.cafeDaManha.entities.Colaborador;
 import com.fcb.cafeDaManha.entities.Itens;
 import com.fcb.cafeDaManha.entities.enums.Status;
 
@@ -19,21 +20,24 @@ public class ItensDTO implements Serializable {
 	private Long  id;
 	private String nome;
 	private Status status;
+	private Colaborador colaborador;
 
 	public ItensDTO() {
 	}
 
-	public ItensDTO(Long id, String nome, Status status) {
+	public ItensDTO(Long id, String nome, Status status,Colaborador colaborador) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.status = status;
+		this.colaborador = colaborador;
 	}
 
 	public ItensDTO(Itens obj) {
 		id = obj.getId();
 		nome = obj.getNome();
 		status = obj.getStatus();
+		colaborador = obj.getColaborador();
 	}
 
 	public Status getStatus() {
@@ -59,6 +63,14 @@ public class ItensDTO implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -77,4 +89,5 @@ public class ItensDTO implements Serializable {
 		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
 
+	
 }

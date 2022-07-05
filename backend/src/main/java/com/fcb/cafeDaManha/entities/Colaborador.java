@@ -23,22 +23,21 @@ public class Colaborador implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long  id;
+	private Long id;
 	private String nome;
 	@Column(unique = true)
 	private String cpf;
 
 	private String senha;
-	 
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "colaborador")
 	private Set<Itens> itens = new HashSet<>();
-	
-		
+
 	public Colaborador() {
 	}
 
-	public Colaborador(Long  id, String nome, String cpf, String senha) {
+	public Colaborador(Long id, String nome, String cpf, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -78,13 +77,13 @@ public class Colaborador implements Serializable {
 		this.senha = senha;
 	}
 
+	public Set<Itens> getItens() {
+		return itens;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(senha, cpf, id, nome);
-	}
-	
-	public Set<Itens> getItens() {
-		return itens;
 	}
 
 	@Override

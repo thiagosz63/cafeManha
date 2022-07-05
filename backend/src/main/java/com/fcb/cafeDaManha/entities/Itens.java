@@ -32,11 +32,11 @@ public class Itens implements Serializable {
 	public Itens() {
 	}
 
-	public Itens(Long  id, String nome, Status status) {
-		super();
+	public Itens(Long  id, String nome, Status status,Colaborador colaborador) {
 		this.id = id;
 		this.nome = nome;
 		this.status = status;
+		this.colaborador =  colaborador;
 	}
 
 	public Status getStatus() {

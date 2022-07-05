@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.fcb.cafeDaManha.entities.Colaborador;
 
-public interface ColaboradorRepositorys extends JpaRepository<Colaborador, Long> {
+public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> {
 
 	@Query(value = "SELECT * FROM colaborador",
 			countQuery = "SELECT count(*) FROM colaborador", nativeQuery = true)

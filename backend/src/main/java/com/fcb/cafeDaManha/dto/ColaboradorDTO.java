@@ -1,4 +1,4 @@
-package com.fcb.cafeDaManha.entitiesDTO;
+package com.fcb.cafeDaManha.dto;
 
 import java.io.Serializable;
 import java.util.Objects;

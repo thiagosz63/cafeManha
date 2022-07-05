@@ -1,4 +1,4 @@
-package com.fcb.cafeDaManha.controllers;
+package com.fcb.cafeDaManha.controller;
 
 import java.net.URI;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fcb.cafeDaManha.dto.ColaboradorDTO;
 import com.fcb.cafeDaManha.entities.Colaborador;
-import com.fcb.cafeDaManha.entitiesDTO.ColaboradorDTO;
 import com.fcb.cafeDaManha.service.ColaboradorService;
 
 @RestController
