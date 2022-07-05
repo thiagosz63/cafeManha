@@ -9,9 +9,8 @@ interface props {
 }
 
 export default function MinhasListas({
-    estadoBotao = true, urlDoBanco}: props) {
+    estadoBotao = true, urlDoBanco }: props) {
 
-     const [pagina,setPagina] = useState(0); 
     const [colaboradorPorPaginas, setcolaboradorPorPaginas] = useState<ColaboradorPorPaginas>({
         last: true,
         totalPages: 0,
@@ -19,20 +18,17 @@ export default function MinhasListas({
         number: 0,
         first: true,
     });
-    function mudaPagina(index:number) {
-        setPagina(index);
-    }
 
-    
     useEffect(() => {
-        axiosGet(`/colaborador${urlDoBanco}&linesPage=3&page=${pagina}`)
+        axiosGet(`/colaborador${urlDoBanco}&linesPage=3&page=0`)
             .then((response) => {
                 setcolaboradorPorPaginas(response.data)
             })
             .catch(() => {
                 toast.error("Error ao listar Colaboradores")
-            })
-    },[pagina])
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <div className="table-responsive">
@@ -53,8 +49,7 @@ export default function MinhasListas({
                                 <th scope="row">
                                     <button hidden={estadoBotao}
                                         type="button"
-                                        className="btnPersonal"
-                                        onClick={()=>mudaPagina(2)}>
+                                        className="btnPersonal" >
                                         Apagar
                                     </button>
                                 </th>
