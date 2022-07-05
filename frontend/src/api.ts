@@ -1,19 +1,19 @@
 import axios from "axios";
 import { FormikValues } from "formik";
 
-const api_url = 'http://127.0.0.1:8080';
+const API_URL = process.env.REACT_APP_API_URL;
 
 export function axiosGet(props:string){
-    return axios(api_url + props )
+    return axios(API_URL + props )
 }
 
 export function axiosPost(props:string, Values: FormikValues){
-    return axios.post(api_url + props,Values)
+    return axios.post(API_URL + props,Values)
 }
 
 export function axiosPut(props:string,values: FormikValues){
-    return axios.put(api_url + props,values)
+    return axios.put(API_URL + props,values)
 }
 export function axiosDelete(props:string){
-    return axios.delete(api_url + props)
+    return axios.delete(API_URL + props)
 }

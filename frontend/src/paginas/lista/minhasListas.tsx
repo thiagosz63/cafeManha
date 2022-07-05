@@ -1,4 +1,4 @@
-import { axiosGet } from "Api";
+import { axiosGet } from "api";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { ColaboradorPorPaginas } from "../../tipos/types"
