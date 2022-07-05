@@ -21,7 +21,7 @@ public class ColaboradorService {
 	public Page<ColaboradorDTO> buscarColaborador(Integer page, Integer linesPage, String direction, String orderBy) {
 
 		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction), orderBy);
-		Page<Colaborador> pages = colaboradorRepository.findAll(pageRequest);
+		Page<Colaborador> pages = colaboradorRepository.buscarColaborador(pageRequest);
 		return pages.map(x -> new ColaboradorDTO(x));
 	}
 
@@ -39,5 +39,13 @@ public class ColaboradorService {
 
 	public Colaborador fromDTO(ColaboradorDTO objDTO) {
 		return new Colaborador(objDTO.getId(), objDTO.getNome(), objDTO.getCpf(), objDTO.getSenha());
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<ColaboradorDTO> buscarColaboradorPorCpf(String cpf,Integer page, Integer linesPage, String direction, String orderBy) {
+
+		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction), orderBy);
+		Page<Colaborador> pages = colaboradorRepository.buscarColaboradorPorCpf(cpf,pageRequest);
+		return pages.map(x -> new ColaboradorDTO(x));
 	}
 }

@@ -1,29 +1,16 @@
-import { axiosGet } from "Api";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import MinhasListas from "./minhasListas";
 import './Style.css';
-import { ColaboradorPorPaginas } from "../../tipos/types";
 
 export default function Lista() {
-    const [colaboradorPaginas, setColaboradorPaginas] = useState<ColaboradorPorPaginas>({
-        last: true,
-        totalPages: 0,
-        totalElements: 0,
-        number: 0,
-        first: true,
-    });
-    useEffect(() => {
-        axiosGet(`/colaborador/page`)
-            .then((response) => {
-                setColaboradorPaginas(response.data)
-            })
-            .catch(() => {
-                toast.error("Error ao listar Colaboradores")
 
-            })
-    }, [])
+    const historys = useNavigate();
+    const cpfLogado = localStorage.getItem('CafeManha')
 
+    function sair() {
+        localStorage.removeItem('CafeManha');
+        historys('/');
+    }
 
     return (
         <div className="container">
@@ -39,16 +26,21 @@ export default function Lista() {
 
                 <button type="button" className="btnPersonalLista"> Inserir</button>
                 <button type="button" className="btnPersonalLista"> Atualizar</button>
+                <button type="button"
+                    className="btnPersonalLista"
+                    onClick={sair}>
+                    Sair
+                </button>
 
                 <MinhasListas estadoBotao={false}
-                    colaboradorPorPaginas={colaboradorPaginas} />
+                    urlDoBanco={`/pageCpf?cpf=${cpfLogado}`} />
 
                 <h2 className="centralizar_h2">
                     Itens Escolhidos <br />
                 </h2>
 
                 <MinhasListas estadoBotao={true}
-                    colaboradorPorPaginas={colaboradorPaginas} />
+                    urlDoBanco="/page?" />
             </div>
         </div>
     )

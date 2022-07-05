@@ -12,9 +12,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { axiosGet } from "Api";
 
-
-
-
 export default function Login() {
 
     const [show, setShow] = useState(false);
@@ -29,13 +26,14 @@ export default function Login() {
         axiosGet(`/colaborador?valor=${values.cpf}`)
             .then((response) => {
                 if (response.data.senha === values.password) {
+                    localStorage.setItem('CafeManha', response.data.cpf);
                     historys('/lista');
                 } else{
                     toast.warning("Usuario ou senha Invalidos")
                 }    
             })
             .catch(() => {
-                toast.error("Colaborador não Cadastrado")
+                toast.warning("Usuario ou senha Invalidos")
 
             })
     }

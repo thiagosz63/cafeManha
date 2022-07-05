@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fcb.cafeDaManha.entities.enums.Status;
@@ -22,6 +24,10 @@ public class Itens implements Serializable {
 	private Long  id;
 	private String nome;
 	private Status status;
+	
+	@ManyToOne
+	@JoinColumn(name = "colaborador_id")
+	private Colaborador colaborador;
 	
 	public Itens() {
 	}
@@ -59,6 +65,14 @@ public class Itens implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, nome);
+	}
+	
+	public Colaborador getColaborador() {
+		return colaborador;
+	}
+
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
 	@Override

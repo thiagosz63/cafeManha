@@ -34,7 +34,7 @@ public class ColaboradorController {
 		Page<ColaboradorDTO> list = colaboradorService.buscarColaborador(page, linesPage, direction, orderBy);
 		return ResponseEntity.ok().body(list);
 	}
-
+	
 	@PostMapping
 	public ResponseEntity<String> insert(@RequestBody ColaboradorDTO objDTO) {
 		Colaborador obj = colaboradorService.fromDTO(objDTO);
@@ -47,6 +47,17 @@ public class ColaboradorController {
 	public ResponseEntity<ColaboradorDTO> buscarPorParametro(
 			@RequestParam(value = "valor", defaultValue = "") String valor) {
 		ColaboradorDTO list = colaboradorService.buscarbuscarPorParametro(valor);
+		return ResponseEntity.ok().body(list);
+	}
+	@GetMapping("/pageCpf")
+	public ResponseEntity<Page<ColaboradorDTO>> buscarColaboradorPorCpf(
+			@RequestParam(value = "cpf", defaultValue = "") String cpf,
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
+			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy) {
+
+		Page<ColaboradorDTO> list = colaboradorService.buscarColaboradorPorCpf(cpf,page, linesPage, direction, orderBy);
 		return ResponseEntity.ok().body(list);
 	}
 
