@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fcb.cafeDaManha.entities.enums.Status;
+import com.fcb.cafeDaManha.entities.enums.ItemStatus;
 
 @Entity
 @Table(name = "`itens`")
@@ -23,7 +23,7 @@ public class Itens implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long  id;
 	private String nome;
-	private Status status;
+	private Integer status;
 	
 	@ManyToOne
 	@JoinColumn(name = "colaborador_id")
@@ -32,19 +32,19 @@ public class Itens implements Serializable {
 	public Itens() {
 	}
 
-	public Itens(Long  id, String nome, Status status,Colaborador colaborador) {
+	public Itens(Long  id, String nome, ItemStatus status,Colaborador colaborador) {
 		this.id = id;
 		this.nome = nome;
-		this.status = status;
+		this.status = (status == null) ? null : status.getCod();
 		this.colaborador =  colaborador;
 	}
 
-	public Status getStatus() {
-		return status;
+	public ItemStatus getStatus() {
+		return ItemStatus.toEnum(status);
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setStatus(ItemStatus status) {
+		this.status = status.getCod();
 	}
 
 	public Long getId() {

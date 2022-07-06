@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 import com.fcb.cafeDaManha.entities.Colaborador;
 import com.fcb.cafeDaManha.entities.Itens;
-import com.fcb.cafeDaManha.entities.enums.Status;
+import com.fcb.cafeDaManha.entities.enums.ItemStatus;
 
 public class ItensDTO implements Serializable {
 
@@ -19,13 +19,13 @@ public class ItensDTO implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long  id;
 	private String nome;
-	private Status status;
+	private ItemStatus status;
 	private Colaborador colaborador;
 
 	public ItensDTO() {
 	}
 
-	public ItensDTO(Long id, String nome, Status status,Colaborador colaborador) {
+	public ItensDTO(Long id, String nome, ItemStatus status,Colaborador colaborador) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -40,11 +40,11 @@ public class ItensDTO implements Serializable {
 		colaborador = obj.getColaborador();
 	}
 
-	public Status getStatus() {
+	public ItemStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(ItemStatus status) {
 		this.status = status;
 	}
 
