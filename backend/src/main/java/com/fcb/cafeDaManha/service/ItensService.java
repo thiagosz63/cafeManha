@@ -24,4 +24,15 @@ public class ItensService {
 		return pages.map(x -> new ItensDTO(x));
 	}
 
+	@Transactional
+	public Itens insert(Itens obj) {
+		obj = itensRepository.save(obj);
+		return obj;
+	}
+
+	public Itens fromDTO(ItensDTO objDTO) {
+		Itens item = new Itens(null, objDTO.getNome(), objDTO.getStatus(), objDTO.getColaborador());
+		return item;
+	}
+
 }
