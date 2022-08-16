@@ -33,7 +33,7 @@ export default function Login() {
                 }    
             })
             .catch(() => {
-                toast.warning("Usuario ou senha Invalidos")
+                toast.warning("Error no banco de dados")
 
             })
     }
