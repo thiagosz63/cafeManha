@@ -23,7 +23,7 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> 
 	
 	@Query(value = "select * from colaborador where cpf=?1",
 			nativeQuery = true)
-	Colaborador buscarPorParametro(String valor);
+	Colaborador buscarPorCpf(String cpf);
 	
 	@Query(value = "SELECT * FROM colaborador where cpf=?1",
 			countQuery = "SELECT count(*) FROM colaborador", nativeQuery = true)

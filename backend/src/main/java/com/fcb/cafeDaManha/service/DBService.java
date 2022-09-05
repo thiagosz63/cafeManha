@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fcb.cafeDaManha.entities.Colaborador;
@@ -16,16 +17,26 @@ import com.fcb.cafeDaManha.repository.ItensRepository;
 public class DBService {
 
 	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
 	private ColaboradorRepository colaboradorRepositorys;
 
 	@Autowired
 	private ItensRepository itensRepository;
-
+	
 	public void instantiateTestDataBase() throws ParseException {
-		Colaborador col1 = new Colaborador(null, "thiago", "168.866.390-80", "123456");
-		Colaborador col2 = new Colaborador(null, "Marya", "802.295.340-74", "123456");
-		Colaborador col3 = new Colaborador(null, "jose", "930.522.990-50", "123456");
-		Colaborador col4 = new Colaborador(null, "jaqueline", "976.666.310-65", "123456");
+		Colaborador col1 = new Colaborador(
+				null, "thiago", "16886639080", bCryptPasswordEncoder.encode("123456"));
+		
+		Colaborador col2 = new Colaborador(
+				null, "Marya", "80229534074", bCryptPasswordEncoder.encode("123456"));
+		
+		Colaborador col3 = new Colaborador(
+				null, "jose", "93052299050", bCryptPasswordEncoder.encode("123456"));
+		
+		Colaborador col4 = new Colaborador(
+				null, "jaqueline", "97666631065", bCryptPasswordEncoder.encode("123456"));
 
 		Itens it1 = new Itens(null, "bolo doce", ItemStatus.NaoDisponivel, col1);
 		Itens it2 = new Itens(null, "pão com queijo", ItemStatus.NaoDisponivel, col2);
