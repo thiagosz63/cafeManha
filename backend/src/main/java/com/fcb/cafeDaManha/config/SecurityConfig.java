@@ -13,13 +13,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.fcb.cafeDaManha.security.JWTAuthenticatonFilter;
+import com.fcb.cafeDaManha.security.JWTAuthenticationFilter;
+import com.fcb.cafeDaManha.security.JWTAuthorizationFilter;
 import com.fcb.cafeDaManha.security.JWTUtil;
 
 @Configuration
@@ -34,6 +36,9 @@ public class SecurityConfig {
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private JWTUtil jwtUtil;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**",
@@ -50,7 +55,8 @@ public class SecurityConfig {
 		http.authorizeRequests()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
-		http.addFilter(new JWTAuthenticatonFilter(authenticationManager, jwtUtil));
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		return http.build();

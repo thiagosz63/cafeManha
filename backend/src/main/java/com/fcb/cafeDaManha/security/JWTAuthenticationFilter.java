@@ -17,12 +17,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fcb.cafeDaManha.dto.CredenciaisDTO;
 
-public class JWTAuthenticatonFilter extends UsernamePasswordAuthenticationFilter{
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	
 	private	AuthenticationManager authenticationManager;
 	private JWTUtil jwtUtil;
 	
-	public JWTAuthenticatonFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 		setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
