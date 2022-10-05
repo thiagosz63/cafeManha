@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fcb.cafeDaManha.dto.ColaboradorDTO;
+import com.fcb.cafeDaManha.dto.ColaboradorNewDTO;
 import com.fcb.cafeDaManha.entities.Colaborador;
 import com.fcb.cafeDaManha.repository.ColaboradorRepository;
 
@@ -38,6 +39,9 @@ public class ColaboradorService {
 	}
 
 	public Colaborador fromDTO(ColaboradorDTO objDTO) {
+		return new Colaborador(objDTO.getId(), objDTO.getNome(), objDTO.getCpf(), objDTO.getSenha());
+	}
+	public Colaborador fromDTO(ColaboradorNewDTO objDTO) {
 		return new Colaborador(objDTO.getId(), objDTO.getNome(), objDTO.getCpf(), objDTO.getSenha());
 	}
 	

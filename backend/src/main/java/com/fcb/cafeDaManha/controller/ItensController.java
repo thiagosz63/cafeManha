@@ -2,6 +2,8 @@ package com.fcb.cafeDaManha.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +36,10 @@ public class ItensController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> insert(@RequestBody ItensDTO objDTO) {
+	public ResponseEntity<String> insert(@Valid @RequestBody ItensDTO objDTO) {
 		Itens obj = itensService.fromDTO(objDTO);
 		obj = itensService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body("Cliente adicionado com sucesso, URI = " + uri);
 	}
-
 }

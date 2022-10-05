@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fcb.cafeDaManha.entities.Colaborador;
 
-public class ColaboradorDTO implements Serializable {
+public class ColaboradorNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -19,13 +19,14 @@ public class ColaboradorDTO implements Serializable {
 	@NotBlank(message = "Preenchimento Obligatorio")
 	private String cpf;
 	
-	@JsonIgnore
+	@NotBlank(message = "Preenchimento Obligatorio")
+	@Size(min = 6, max = 12, message = "O campo deve conter entre 6 e 12 caracteres")
 	private String senha;
 
-	public ColaboradorDTO() {
+	public ColaboradorNewDTO() {
 	}
 
-	public ColaboradorDTO(Long id, String nome, String cpf, String senha) {
+	public ColaboradorNewDTO(Long id, String nome, String cpf, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -33,7 +34,7 @@ public class ColaboradorDTO implements Serializable {
 		this.senha = senha;
 	}
 
-	public ColaboradorDTO(Colaborador obj) {
+	public ColaboradorNewDTO(Colaborador obj) {
 		id = obj.getId();
 		nome = obj.getNome();
 		cpf = obj.getCpf();
@@ -85,7 +86,7 @@ public class ColaboradorDTO implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ColaboradorDTO other = (ColaboradorDTO) obj;
+		ColaboradorNewDTO other = (ColaboradorNewDTO) obj;
 		return Objects.equals(cpf, other.cpf) && Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
 				&& Objects.equals(senha, other.senha);
 	}

@@ -3,23 +3,24 @@ package com.fcb.cafeDaManha.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 import com.fcb.cafeDaManha.entities.Colaborador;
 import com.fcb.cafeDaManha.entities.Itens;
 import com.fcb.cafeDaManha.entities.enums.ItemStatus;
 
 public class ItensDTO implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long  id;
+	
+	@NotBlank(message = "Preenchimento Obligatorio")
 	private String nome;
+	
+	@NotBlank(message = "Preenchimento Obligatorio")
 	private ItemStatus status;
+	
+	@NotBlank(message = "Preenchimento Obligatorio")
 	private Colaborador colaborador;
 
 	public ItensDTO() {
@@ -88,6 +89,4 @@ public class ItensDTO implements Serializable {
 		ItensDTO other = (ItensDTO) obj;
 		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
-
-	
 }

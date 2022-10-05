@@ -16,7 +16,6 @@ import com.fcb.cafeDaManha.entities.enums.ItemStatus;
 @Entity
 @Table(name = "`itens`")
 public class Itens implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -86,5 +85,4 @@ public class Itens implements Serializable {
 		Itens other = (Itens) obj;
 		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
-
 }

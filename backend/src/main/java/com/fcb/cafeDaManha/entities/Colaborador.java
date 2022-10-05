@@ -28,6 +28,7 @@ public class Colaborador implements Serializable {
 	@Column(unique = true)
 	private String cpf;
 
+	@JsonIgnore
 	private String senha;
 
 	@JsonIgnore
@@ -98,5 +99,4 @@ public class Colaborador implements Serializable {
 		return Objects.equals(senha, other.senha) && Objects.equals(cpf, other.cpf) && Objects.equals(id, other.id)
 				&& Objects.equals(nome, other.nome);
 	}
-
 }
