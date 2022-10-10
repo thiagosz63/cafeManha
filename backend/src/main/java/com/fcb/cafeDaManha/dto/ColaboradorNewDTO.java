@@ -7,7 +7,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fcb.cafeDaManha.entities.Colaborador;
+import com.fcb.cafeDaManha.service.validation.ColaboradorInsert;
 
+@ColaboradorInsert
 public class ColaboradorNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
