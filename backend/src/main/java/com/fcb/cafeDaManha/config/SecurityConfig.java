@@ -15,11 +15,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.fcb.cafeDaManha.security.JWTAuthenticationFailureHandler;
 import com.fcb.cafeDaManha.security.JWTAuthenticationFilter;
 import com.fcb.cafeDaManha.security.JWTAuthorizationFilter;
 import com.fcb.cafeDaManha.security.JWTUtil;
@@ -54,7 +56,9 @@ public class SecurityConfig {
 
 		http.authorizeRequests()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
-			.anyRequest().authenticated();
+			.anyRequest().authenticated()
+			.and()
+			.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -80,5 +84,10 @@ public class SecurityConfig {
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	@Bean
+    public AuthenticationEntryPoint authenticationEntryPoint(){
+        return new JWTAuthenticationFailureHandler();
+    }
 
 }
