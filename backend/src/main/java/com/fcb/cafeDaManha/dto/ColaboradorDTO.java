@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fcb.cafeDaManha.entities.Colaborador;
+import com.fcb.cafeDaManha.service.validation.ColaboradorInsert;
 
+@ColaboradorInsert
 public class ColaboradorDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,7 +22,9 @@ public class ColaboradorDTO implements Serializable {
 	@NotBlank(message = "Preenchimento Obligatorio")
 	private String cpf;
 	
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@NotBlank(message = "Preenchimento Obligatorio")
+	@Size(min = 6, max = 12, message = "O campo deve conter entre 6 e 12 caracteres")
 	private String senha;
 
 	public ColaboradorDTO() {

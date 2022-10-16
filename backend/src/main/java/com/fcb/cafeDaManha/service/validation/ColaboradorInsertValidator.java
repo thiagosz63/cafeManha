@@ -9,18 +9,18 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fcb.cafeDaManha.controller.exception.FieldMessage;
-import com.fcb.cafeDaManha.dto.ColaboradorNewDTO;
+import com.fcb.cafeDaManha.dto.ColaboradorDTO;
 import com.fcb.cafeDaManha.entities.Colaborador;
 import com.fcb.cafeDaManha.repository.ColaboradorRepository;
 import com.fcb.cafeDaManha.service.validation.utils.BR;
 
-public class ColaboradorInsertValidator implements ConstraintValidator<ColaboradorInsert, ColaboradorNewDTO> {
+public class ColaboradorInsertValidator implements ConstraintValidator<ColaboradorInsert, ColaboradorDTO> {
 
 	@Autowired
 	private ColaboradorRepository colaboradorRepository;
 
 	@Override
-	public boolean isValid(ColaboradorNewDTO objDTO, ConstraintValidatorContext context) {
+	public boolean isValid(ColaboradorDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		if (!BR.isValidCPF(objDTO.getCpf())) {
 			list.add(new FieldMessage("cpf", "CPF inválido"));

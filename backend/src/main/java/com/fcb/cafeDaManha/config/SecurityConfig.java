@@ -52,16 +52,19 @@ public class SecurityConfig {
 		if (Arrays.asList(environment.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-		http.cors().and().csrf().disable();
-
-		http.authorizeRequests()
+		http.cors()
+			.and()
+			.csrf()
+			.disable()
+			.authorizeRequests()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated()
 			.and()
-			.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
-		http.addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil));
-		http.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUtil, userDetailsService));
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+			.and()
+			.addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil))
+			.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUtil, userDetailsService))
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		return http.build();
 	}

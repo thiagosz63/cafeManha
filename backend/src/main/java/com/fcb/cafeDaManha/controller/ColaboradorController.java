@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fcb.cafeDaManha.dto.ColaboradorDTO;
-import com.fcb.cafeDaManha.dto.ColaboradorNewDTO;
 import com.fcb.cafeDaManha.entities.Colaborador;
 import com.fcb.cafeDaManha.service.ColaboradorService;
 
@@ -39,7 +38,7 @@ public class ColaboradorController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> insert(@Valid @RequestBody ColaboradorNewDTO objDTO) {
+	public ResponseEntity<String> insert(@Valid @RequestBody ColaboradorDTO objDTO) {
 		Colaborador obj = colaboradorService.fromDTO(objDTO);
 		colaboradorService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
