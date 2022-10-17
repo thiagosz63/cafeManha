@@ -25,7 +25,7 @@ public class ColaboradorInsertValidator implements ConstraintValidator<Colaborad
 		if (!BR.isValidCPF(objDTO.getCpf())) {
 			list.add(new FieldMessage("cpf", "CPF inválido"));
 		}
-		
+
 		Colaborador col = colaboradorRepository.buscarPorCpf(objDTO.getCpf());
 		if (col != null) {
 			list.add(new FieldMessage("cpf", "CPF já cadastrado"));

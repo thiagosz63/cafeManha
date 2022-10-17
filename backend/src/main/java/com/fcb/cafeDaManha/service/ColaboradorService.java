@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fcb.cafeDaManha.dto.ColaboradorDTO;
 import com.fcb.cafeDaManha.entities.Colaborador;
 import com.fcb.cafeDaManha.repository.ColaboradorRepository;
+import com.fcb.cafeDaManha.security.UserSS;
+import com.fcb.cafeDaManha.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class ColaboradorService {
@@ -28,24 +30,29 @@ public class ColaboradorService {
 	@Transactional
 	public void insert(Colaborador obj) {
 		colaboradorRepository.iserir(obj.getCpf(), obj.getNome(), obj.getSenha());
-
 	}
 
 	@Transactional(readOnly = true)
 	public ColaboradorDTO buscarbuscarPorParametro(String valor) {
-		Colaborador list = colaboradorRepository.buscarPorCpf(valor);
-		return new ColaboradorDTO(list);
+		Colaborador obj = colaboradorRepository.buscarPorCpf(valor);
+		UserSS userSS = UserService.authenticated();
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"CPF não encontrado!" + " Tipo: " + userSS.getUsername() + " " + Colaborador.class.getName());
+		}
+		return new ColaboradorDTO(obj);
 	}
 
 	public Colaborador fromDTO(ColaboradorDTO objDTO) {
 		return new Colaborador(objDTO.getId(), objDTO.getNome(), objDTO.getCpf(), objDTO.getSenha());
 	}
-	
+
 	@Transactional(readOnly = true)
-	public Page<ColaboradorDTO> buscarColaboradorPorCpf(String cpf,Integer page, Integer linesPage, String direction, String orderBy) {
+	public Page<ColaboradorDTO> buscarColaboradorPorCpf(String cpf, Integer page, Integer linesPage, String direction,
+			String orderBy) {
 
 		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction), orderBy);
-		Page<Colaborador> pages = colaboradorRepository.buscarColaboradorPorCpf(cpf,pageRequest);
+		Page<Colaborador> pages = colaboradorRepository.buscarColaboradorPorCpf(cpf, pageRequest);
 		return pages.map(x -> new ColaboradorDTO(x));
 	}
 }

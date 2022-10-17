@@ -11,15 +11,15 @@ import com.fcb.cafeDaManha.repository.ColaboradorRepository;
 import com.fcb.cafeDaManha.security.UserSS;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
-	
+public class UserDetailsServiceImpl implements UserDetailsService {
+
 	@Autowired
 	private ColaboradorRepository colaboradorRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
 		Colaborador colaborador = colaboradorRepository.buscarPorCpf(cpf);
-		if(colaborador == null) {
+		if (colaborador == null) {
 			throw new UsernameNotFoundException(cpf);
 		}
 		return new UserSS(colaborador.getId(), colaborador.getCpf(), colaborador.getSenha());
