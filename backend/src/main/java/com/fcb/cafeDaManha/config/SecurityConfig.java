@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -44,6 +45,10 @@ public class SecurityConfig {
 
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**",
+			"/colaborador"
+	};
+	private static final String[] PUBLIC_MATCHERS_POST = {
+			"/colaborador"
 	};
 
 	@Bean
@@ -58,6 +63,7 @@ public class SecurityConfig {
 			.disable()
 			.authorizeRequests()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
+			.antMatchers(HttpMethod.POST,PUBLIC_MATCHERS_POST).permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())

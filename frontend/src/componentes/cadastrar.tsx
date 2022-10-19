@@ -3,9 +3,10 @@ import * as Yup from 'yup';
 import './style.css'
 import { pt } from 'yup-locale-pt';
 import { toast } from 'react-toastify';
-import { axiosPost, axiosPut } from 'api';
 import { validarCPF } from 'utils/validation';
 import { Colaborador } from 'tipos/types';
+import axios from 'axios';
+import { BASE_URL } from 'utils/requests';
 
 interface props {
     colaborador?: Colaborador
@@ -21,17 +22,17 @@ export default function Cadastrar({
 
     const handleSubmit = (Values: FormikValues) => {
         if (colaborador?.id === undefined) {
-            axiosPost('/colaborador', Values)
-                .then(() => {
-                    toast.success('Dados inseridos com sucesso')
+            axios.post(`${BASE_URL}/colaborador`, Values)
+                .then((res) => {
+                    toast.success(res.data)
                     fechaModal();
                     //History.push('/loguin');
                 })
-                .catch(() => {
-                    toast.error("Erro ao cadastrar Colaborador")
+                .catch((res) => {
+                    toast.error(res.response.data.errors[0].message)
                 });
         } else {
-            axiosPut(`/colaborador/${colaborador.id}`, Values)
+            axios.put(`/colaborador/${colaborador.id}`, Values)
                 .then(() => {
                     toast.success('Dados Atualizados com sucesso')
                     fechaModal();

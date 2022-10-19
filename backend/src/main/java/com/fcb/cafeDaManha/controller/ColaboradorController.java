@@ -42,7 +42,7 @@ public class ColaboradorController {
 		Colaborador obj = colaboradorService.fromDTO(objDTO);
 		colaboradorService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body("Cliente adicionado com sucesso, URI = " + uri);
+		return ResponseEntity.created(uri).body("Cliente adicionado com sucesso!");
 	}
 
 	@GetMapping

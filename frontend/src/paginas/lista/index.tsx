@@ -9,6 +9,7 @@ export default function Lista() {
 
     function sair() {
         localStorage.removeItem('CafeManha');
+        localStorage.removeItem('CafeManhaAcesso');
         historys('/');
     }
 

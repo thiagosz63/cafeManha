@@ -10,7 +10,8 @@ import { pt } from "yup-locale-pt";
 import { validarCPF } from "../../utils/validation";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { axiosGet } from "api";
+import axios from "axios";
+import { BASE_URL } from "utils/requests";
 
 export default function Login() {
 
@@ -19,34 +20,29 @@ export default function Login() {
     const handleShow = () => setShow(true);
     const historys = useNavigate();
 
-    Yup.setLocale(pt);    
-    
+    Yup.setLocale(pt);
 
     const handleSubmit = (values: FormikValues) => {
-        axiosGet(`/colaborador?valor=${values.cpf}`)
-            .then((response) => {
-                if (response.data.senha === values.password) {
-                    localStorage.setItem('CafeManha', response.data.cpf);
-                    historys('/lista');
-                } else{
-                    toast.warning("Usuario ou senha Invalidos")
-                }    
+        axios.post(`${BASE_URL}/login`, values)
+            .then((res) => {
+                localStorage.setItem('CafeManha', res.data.cpf);
+                localStorage.setItem('CafeManhaAcesso', res.headers.authorization!);
+                historys('/lista');
             })
-            .catch(() => {
-                toast.warning("Error no banco de dados")
-
+            .catch((res) => {
+                toast.warning(res.response.data.message)
             })
     }
 
     const validations = Yup.object().shape({
         cpf: Yup.string().test("", " CPF Não Valido",
             (value) => validarCPF(value + '')).required(),
-        password: Yup.string().min(6).required()
+        senha: Yup.string().min(6).required()
     })
 
     return (
         <div>
-            <Formik initialValues={{ cpf: "", password: "" }}
+            <Formik initialValues={{ cpf: "", senha: "" }}
                 onSubmit={handleSubmit}
                 validationSchema={validations}>
                 <Form>
@@ -64,10 +60,10 @@ export default function Login() {
                         </div>
 
                         <div>
-                            <label htmlFor='password'>SENHA*</label>
-                            <Field id='password' placeholder='DIGITE SUA SENHA'
-                                name='password' type='password' />
-                            <ErrorMessage component='span' name='password' />
+                            <label htmlFor='senha'>SENHA*</label>
+                            <Field id='senha' placeholder='DIGITE SUA SENHA'
+                                name='senha' type='password' />
+                            <ErrorMessage component='span' name='senha' />
                         </div>
 
                         <input type="submit" className="btnPersonal" value="Login" />

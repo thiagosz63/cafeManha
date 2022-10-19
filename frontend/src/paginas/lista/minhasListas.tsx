@@ -1,6 +1,7 @@
-import { axiosGet } from "api";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { BASE_URL } from "utils/requests";
 import { ColaboradorPorPaginas } from "../../tipos/types"
 
 interface props {
@@ -19,13 +20,18 @@ export default function MinhasListas({
         first: true,
     });
 
+    //axios.defaults.headers.get['Authorization'] = ` ${localStorage.getItem('CafeManhaAcesso')}`;
     useEffect(() => {
-        axiosGet(`/colaborador${urlDoBanco}&linesPage=3&page=0`)
-            .then((response) => {
-                setcolaboradorPorPaginas(response.data)
+        axios.get(`${BASE_URL}/colaborador${urlDoBanco}&linesPage=3&page=0`,{
+            headers : {
+                Authorization : localStorage.getItem('CafeManhaAcesso')
+            } 
+        })
+            .then((res) => {
+                setcolaboradorPorPaginas(res.data)
             })
-            .catch(() => {
-                toast.error("Error ao listar Colaboradores")
+            .catch((res) => {
+                toast.error(res.response.data.message)
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
