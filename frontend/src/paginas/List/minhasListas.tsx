@@ -20,12 +20,11 @@ export default function MinhasListas({
         first: true,
     });
 
-    //axios.defaults.headers.get['Authorization'] = ` ${localStorage.getItem('CafeManhaAcesso')}`;
     useEffect(() => {
-        axios.get(`${BASE_URL}/colaborador${urlDoBanco}&linesPage=3&page=0`,{
-            headers : {
-                Authorization : localStorage.getItem('CafeManhaAcesso')
-            } 
+        axios.get(`${BASE_URL}/colaborador${urlDoBanco}&linesPage=3&page=0`, {
+            headers: {
+                Authorization: localStorage.getItem('CafeManhaAcesso')
+            }
         })
             .then((res) => {
                 setcolaboradorPorPaginas(res.data)
@@ -33,8 +32,8 @@ export default function MinhasListas({
             .catch((res) => {
                 toast.error(res.response.data.message)
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+
+    }, [urlDoBanco])
 
     return (
         <div className="table-responsive">

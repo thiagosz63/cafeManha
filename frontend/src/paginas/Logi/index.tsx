@@ -5,7 +5,7 @@ import { Modal } from 'react-bootstrap';
 import { useState } from "react";
 import { ErrorMessage, Field, Form, Formik, FormikValues } from "formik";
 import * as Yup from 'yup';
-import Cadastrar from "componentes/cadastrar";
+import Cadastrar from "componentes/Cadastrar";
 import { pt } from "yup-locale-pt";
 import { validarCPF } from "../../utils/validation";
 import { toast } from "react-toastify";
