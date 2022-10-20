@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { BASE_URL } from "utils/requests";
-import { ColaboradorPorPaginas } from "../../tipos/types"
+import { ColaboradorPorPaginas } from "../../tipos/colaborado"
 
 interface props {
     estadoBotao: boolean,

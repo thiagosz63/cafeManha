@@ -4,7 +4,7 @@ import './style.css'
 import { pt } from 'yup-locale-pt';
 import { toast } from 'react-toastify';
 import { validarCPF } from 'utils/validation';
-import { Colaborador } from 'tipos/types';
+import { Colaborador } from 'tipos/colaborado';
 import axios from 'axios';
 import { BASE_URL } from 'utils/requests';
 
@@ -37,8 +37,8 @@ export default function Cadastrar({
                     toast.success('Dados Atualizados com sucesso')
                     fechaModal();
                 })
-                .catch(() => {
-                    toast.error("Error: Sistema Indisponivel")
+                .catch((res) => {
+                    toast.error(res.response.data.errors[0].message)
                 });
         }
     }

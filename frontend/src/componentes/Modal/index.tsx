@@ -2,11 +2,15 @@ import Cadastrar from "componentes/Cadastrar";
 import { useState } from "react";
 import { Modal } from 'react-bootstrap';
 
-export default function ModalDinamico() {
+interface Props{
+    handleShow: () => void
+}
+
+export default function ModalDinamico({handleShow } : Props) {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    handleShow = () => setShow(true);
 
     return (
         <Modal
