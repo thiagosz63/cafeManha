@@ -25,8 +25,7 @@ export default function Cadastrar({
             axios.post(`${BASE_URL}/colaborador`, Values)
                 .then((res) => {
                     toast.success(res.data)
-                    fechaModal();
-                    //History.push('/loguin');
+                      fechaModal();
                 })
                 .catch((res) => {
                     toast.error(res.response.data.errors[0].message)

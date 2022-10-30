@@ -5,7 +5,7 @@
 
 .btnPersonalLista{
     margin: 5px 0px 0px 10px;
-    background: #59238F;
+    background: var(--primary-color);
     color: #fff;
     border-radius: 20px;
     font-size: 12px;

@@ -45,10 +45,9 @@ public class SecurityConfig {
 
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**",
-			"/colaborador"
 	};
 	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/colaborador"
+			"/colaborador",
 	};
 
 	@Bean

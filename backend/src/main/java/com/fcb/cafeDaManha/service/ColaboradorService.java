@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ public class ColaboradorService {
 
 	@Autowired
 	private ColaboradorRepository colaboradorRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Transactional(readOnly = true)
 	public Page<ColaboradorDTO> buscarColaborador(Integer page, Integer linesPage, String direction, String orderBy) {
@@ -29,7 +33,8 @@ public class ColaboradorService {
 
 	@Transactional
 	public void insert(Colaborador obj) {
-		colaboradorRepository.iserir(obj.getCpf(), obj.getNome(), obj.getSenha());
+		colaboradorRepository.iserir(obj.getCpf(), obj.getNome(),
+				bCryptPasswordEncoder.encode(obj.getSenha()));
 	}
 
 	@Transactional(readOnly = true)

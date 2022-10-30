@@ -1,7 +1,6 @@
 import "./style.css"
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Modal } from 'react-bootstrap';
 import { useState } from "react";
 import { ErrorMessage, Field, Form, Formik, FormikValues } from "formik";
 import * as Yup from 'yup';
@@ -12,13 +11,14 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "utils/requests";
+import ModalDinamico from "componentes/Modal";
 
 export default function Login() {
 
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     const historys = useNavigate();
+
+    const [chamarModal, setChamarModal] = useState(false);
+    const fecharModal = () => setChamarModal(false);
 
     Yup.setLocale(pt);
 
@@ -41,62 +41,43 @@ export default function Login() {
     })
 
     return (
-        <div>
+        <div className="loginBox">
             <Formik initialValues={{ cpf: "", senha: "" }}
                 onSubmit={handleSubmit}
                 validationSchema={validations}>
                 <Form>
-                    <div className="loginBox">
-                        <FontAwesomeIcon className="user"
-                            icon={faUserCircle}
-                            style={{ fontSize: 100, color: "orange" }}
-                        />
-                        <h3>Seja Bem-Vindo</h3>
-                        <div>
-                            <label htmlFor='cpf'>CPF*</label>
-                            <Field id='cpf' placeholder='DIGITE SEU CPF'
-                                name='cpf' />
-                            <ErrorMessage component='span' name='cpf' />
-                        </div>
-
-                        <div>
-                            <label htmlFor='senha'>SENHA*</label>
-                            <Field id='senha' placeholder='DIGITE SUA SENHA'
-                                name='senha' type='password' />
-                            <ErrorMessage component='span' name='senha' />
-                        </div>
-
-                        <input type="submit" className="btnPersonal" value="Login" />
-
-                        <div>
-                            <button className="btnPersonal"
-                                onClick={handleShow}>
-                                Cadastra-se
-                            </button>
-                        </div>
+                    <FontAwesomeIcon className="user"
+                        icon={faUserCircle}
+                        style={{ fontSize: 100, color: "orange" }}
+                    />
+                    <h3>Seja Bem-Vindo</h3>
+                    <div>
+                        <label htmlFor='cpf'>CPF*</label>
+                        <Field id='cpf' placeholder='DIGITE SEU CPF'
+                            name='cpf' />
+                        <ErrorMessage component='span' name='cpf' />
                     </div>
+
+                    <div>
+                        <label htmlFor='senha'>SENHA*</label>
+                        <Field id='senha' placeholder='DIGITE SUA SENHA'
+                            name='senha' type='password' />
+                        <ErrorMessage component='span' name='senha' />
+                    </div>
+
+                    <input type="submit" className="btnPersonal" value="Login"/>
                 </Form>
             </Formik>
-
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}>
-                <Modal.Header>
-                    <Modal.Title></Modal.Title>
-                    <button type="button"
-                        className="close btnPersonal"
-                        onClick={handleClose}
-                        aria-label="Close">
-                        Cancelar
-                    </button>
-                </Modal.Header>
-                <Modal.Body>
-                    <Cadastrar fechaModal={handleClose} />
-                </Modal.Body>
-            </Modal>
-
+            <div>
+                <button className="btnPersonal"
+                    onClick={() => setChamarModal(true)}>
+                    Cadastra-se
+                </button>
+                {chamarModal ? <ModalDinamico show={chamarModal} fechaModal={fecharModal}
+                    children={
+                        <Cadastrar fechaModal={fecharModal} />} /> : null
+                }
+            </div>
         </div>
     )
 }
