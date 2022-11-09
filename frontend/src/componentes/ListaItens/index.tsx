@@ -1,18 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { ItensPaginado } from "tipos/itens";
 import { BASE_URL } from "utils/requests";
-import { ColaboradorPorPaginas } from "../../tipos/colaborado"
 
 interface props {
     estadoBotao: boolean,
     urlDoBanco: string
 }
 
-export default function MinhasListas({
+export default function ListaItens({
     estadoBotao = true, urlDoBanco }: props) {
 
-    const [colaboradorPorPaginas, setcolaboradorPorPaginas] = useState<ColaboradorPorPaginas>({
+    const [itemPaginado, setItemPaginado] = useState<ItensPaginado>({
         last: true,
         totalPages: 0,
         totalElements: 0,
@@ -21,13 +21,13 @@ export default function MinhasListas({
     });
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/colaborador${urlDoBanco}&linesPage=3&page=0`, {
+        axios.get(`${BASE_URL}/itens${urlDoBanco}&linesPage=10&page=0`, {
             headers: {
                 Authorization: localStorage.getItem('CafeManhaAcesso')
             }
         })
             .then((res) => {
-                setcolaboradorPorPaginas(res.data)
+                setItemPaginado(res.data)
             })
             .catch((res) => {
                 toast.error(res.response.data.message)
@@ -48,7 +48,7 @@ export default function MinhasListas({
                 </thead>
                 <tbody>
                     {
-                        colaboradorPorPaginas.content?.map(item => (
+                        itemPaginado.content?.map(item => (
 
                             <tr key={item.id}>
                                 <th scope="row">
@@ -58,9 +58,9 @@ export default function MinhasListas({
                                         Apagar
                                     </button>
                                 </th>
-                                <td>{item.nome} </td>
-                                <td>{item.cpf}</td>
-                                <td>Queijo Mussarela</td>
+                                <td>{item.colaborador.nome} </td>
+                                <td>{item.colaborador.cpf}</td>
+                                <td>{item.nome}</td>
                             </tr>
                         ))
                     }

@@ -16,12 +16,19 @@ public class ItensService {
 
 	@Autowired
 	private ItensRepository itensRepository;
-
+	
 	@Transactional(readOnly = true)
 	public Page<ItensDTO> findPage(Integer page, Integer linesPage, String direction, String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction), orderBy);
 		Page<Itens> pages = itensRepository.findAll(pageRequest);
 		return pages.map(x -> new ItensDTO(x));
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<ItensDTO> findColaborador(Long idColaborador,Integer page, Integer linesPage, String direction, String orderBy) {
+		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction), orderBy);
+	Page<Itens> obj = itensRepository.findByColaborador(idColaborador, pageRequest);
+		return obj.map(x-> new ItensDTO(x));
 	}
 
 	@Transactional

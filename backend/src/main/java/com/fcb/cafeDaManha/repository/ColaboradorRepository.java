@@ -10,7 +10,7 @@ import com.fcb.cafeDaManha.entities.Colaborador;
 
 public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> {
 
-	@Query(value = "SELECT * FROM colaborador", countQuery = "SELECT count(*) FROM colaborador", nativeQuery = true)
+	@Query(value = "SELECT * FROM colaborador",nativeQuery = true)
 	Page<Colaborador> buscarColaborador(Pageable pageable);
 
 	@Modifying
@@ -20,6 +20,6 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> 
 	@Query(value = "select * from colaborador where cpf=?1", nativeQuery = true)
 	Colaborador buscarPorCpf(String cpf);
 
-	@Query(value = "SELECT * FROM colaborador where cpf=?1", countQuery = "SELECT count(*) FROM colaborador", nativeQuery = true)
+	@Query(value = "SELECT * FROM colaborador where cpf=?1",nativeQuery = true)
 	Page<Colaborador> buscarColaboradorPorCpf(String cpf, Pageable pageable);
 }

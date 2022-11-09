@@ -27,19 +27,31 @@ public class ItensController {
 	private ItensService itensService;
 
 	@GetMapping("/page")
-	public ResponseEntity<Page<ItensDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<ItensDTO>> findPage(
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy) {
 		Page<ItensDTO> list = itensService.findPage(page, linesPage, direction, orderBy);
 		return ResponseEntity.ok().body(list);
 	}
-	
+
+	@GetMapping("/colaborador")
+	public ResponseEntity<Page<ItensDTO>> findColaborador(
+			@RequestParam(value = "id") Long idColaborador,
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
+			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy){
+		Page<ItensDTO> obj = itensService.findColaborador(idColaborador,page, linesPage, direction, orderBy);
+		return ResponseEntity.ok().body(obj);
+	}
+
 	@PostMapping
 	public ResponseEntity<String> insert(@Valid @RequestBody ItensDTO objDTO) {
 		Itens obj = itensService.fromDTO(objDTO);
 		obj = itensService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body("Cliente adicionado com sucesso, URI = " + uri);
+		return ResponseEntity.created(uri).body("Item adicionado com sucesso, URI = " + uri);
 	}
 }

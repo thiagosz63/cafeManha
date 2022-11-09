@@ -1,11 +1,11 @@
+import ListaItens from "componentes/ListaItens";
 import { useNavigate } from "react-router-dom";
-import MinhasListas from "./minhasListas";
 import './Style.css';
 
 export default function Lista() {
 
     const historys = useNavigate();
-    const cpfLogado = localStorage.getItem('CafeManha')
+    const idColaborador = localStorage.getItem('CafeManha')
 
     function sair() {
         localStorage.removeItem('CafeManha');
@@ -33,15 +33,15 @@ export default function Lista() {
                     Sair
                 </button>
 
-                <MinhasListas estadoBotao={false}
-                    urlDoBanco={`/pageCpf?cpf=${cpfLogado}`} />
+                <ListaItens estadoBotao={false}
+                    urlDoBanco={`/colaborador?id=${idColaborador}`} />
 
                 <h2 className="centralizar_h2">
                     Itens Escolhidos <br />
                 </h2>
 
-                <MinhasListas estadoBotao={true}
-                    urlDoBanco="/page?" />
+                <ListaItens estadoBotao={true}
+                    urlDoBanco="/page?&orderBy=colaborador.nome" />
             </div>
         </div>
     )

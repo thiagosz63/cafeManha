@@ -25,7 +25,7 @@ export default function Login() {
     const handleSubmit = (values: FormikValues) => {
         axios.post(`${BASE_URL}/login`, values)
             .then((res) => {
-                localStorage.setItem('CafeManha', res.data.cpf);
+                localStorage.setItem('CafeManha', res.data.id);
                 localStorage.setItem('CafeManhaAcesso', res.headers.authorization!);
                 historys('/lista');
             })
