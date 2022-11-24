@@ -27,7 +27,7 @@ public class DBService {
 	
 	public void instantiateTestDataBase() throws ParseException {
 		Colaborador col1 = new Colaborador(
-				null, "thiago", "16886639080", bCryptPasswordEncoder.encode("123456"));
+				null, "ADM", "16886639080", bCryptPasswordEncoder.encode("123456"));
 		
 		Colaborador col2 = new Colaborador(
 				null, "Marya", "80229534074", bCryptPasswordEncoder.encode("123456"));
@@ -38,19 +38,20 @@ public class DBService {
 		Colaborador col4 = new Colaborador(
 				null, "jaqueline", "97666631065", bCryptPasswordEncoder.encode("123456"));
 
-		Itens it1 = new Itens(null, "bolo doce", ItemStatus.NaoDisponivel, col1);
+		Itens it1 = new Itens(null, "bolo doce", ItemStatus.Disponivel, col1);
 		Itens it2 = new Itens(null, "pão com queijo", ItemStatus.NaoDisponivel, col2);
 		Itens it3 = new Itens(null, "tapioca", ItemStatus.NaoDisponivel, col2);
 		Itens it4 = new Itens(null, "suco de laranja", ItemStatus.NaoDisponivel, col3);
 		Itens it5 = new Itens(null, "suco de limão", ItemStatus.NaoDisponivel, col4);
+		Itens it6 = new Itens(null, "bolo de fuba", ItemStatus.Disponivel, col1);
 
-		col1.getItens().addAll(Arrays.asList(it1));
+		col1.getItens().addAll(Arrays.asList(it1,it6));
 		col2.getItens().addAll(Arrays.asList(it2, it3));
 		col3.getItens().addAll(Arrays.asList(it4));
 		col4.getItens().addAll(Arrays.asList(it5));
 
 		colaboradorRepositorys.saveAll(Arrays.asList(col1, col2, col3, col4));
-		itensRepository.saveAll(Arrays.asList(it1, it2, it3, it4, it5));
+		itensRepository.saveAll(Arrays.asList(it1, it2, it3, it4, it5,it6));
 
 	}
 }

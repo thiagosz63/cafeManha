@@ -28,11 +28,12 @@ public class ItensController {
 
 	@GetMapping("/page")
 	public ResponseEntity<Page<ItensDTO>> findPage(
+			@RequestParam(value = "status", defaultValue = "1") Integer status,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy) {
-		Page<ItensDTO> list = itensService.findPage(page, linesPage, direction, orderBy);
+			@RequestParam(value = "orderBy", defaultValue = "id") String orderBy) {
+		Page<ItensDTO> list = itensService.findPage(status,page, linesPage, direction, orderBy);
 		return ResponseEntity.ok().body(list);
 	}
 
@@ -42,7 +43,7 @@ public class ItensController {
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPage", defaultValue = "24") Integer linesPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy){
+			@RequestParam(value = "orderBy", defaultValue = "id") String orderBy){
 		Page<ItensDTO> obj = itensService.findColaborador(idColaborador,page, linesPage, direction, orderBy);
 		return ResponseEntity.ok().body(obj);
 	}

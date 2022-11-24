@@ -1,5 +1,10 @@
+import axios from "axios";
 import ListaItens from "componentes/ListaItens";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ItensPaginado } from "tipos/itens";
+import { BASE_URL } from "utils/requests";
 import './Style.css';
 
 export default function Lista() {
@@ -12,6 +17,28 @@ export default function Lista() {
         localStorage.removeItem('CafeManhaAcesso');
         historys('/');
     }
+    const [itemPaginado, setItemPaginado] = useState<ItensPaginado>({
+        last: true,
+        totalPages: 0,
+        totalElements: 0,
+        number: 0,
+        first: true,
+    });
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/itens/page?&linesPage=10&page=0`, {
+            headers: {
+                Authorization: localStorage.getItem('CafeManhaAcesso')
+            }
+        })
+            .then((res) => {
+                setItemPaginado(res.data)
+            })
+            .catch((res) => {
+                toast.error(res.response.data.message)
+            });
+
+    }, [])
 
     return (
         <div className="container">
@@ -21,8 +48,11 @@ export default function Lista() {
                 </h2>
 
                 <select>
-                    <option value="queijo"> Queijo prato</option>
-                    <option value="queijo"> Queijo Coalho</option>
+                    {
+                        itemPaginado.content?.map(item => (
+                            <option key={item.id} value={item.nome}> {item.nome}</option>
+                        ))
+                    }
                 </select>
 
                 <button type="button" className="btnPersonalLista"> Inserir</button>
@@ -41,7 +71,7 @@ export default function Lista() {
                 </h2>
 
                 <ListaItens estadoBotao={true}
-                    urlDoBanco="/page?&orderBy=colaborador.nome" />
+                    urlDoBanco="/page?status=2&" />
             </div>
         </div>
     )

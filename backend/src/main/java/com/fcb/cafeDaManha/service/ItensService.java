@@ -18,9 +18,9 @@ public class ItensService {
 	private ItensRepository itensRepository;
 	
 	@Transactional(readOnly = true)
-	public Page<ItensDTO> findPage(Integer page, Integer linesPage, String direction, String orderBy) {
+	public Page<ItensDTO> findPage(Integer status, Integer page, Integer linesPage, String direction, String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction), orderBy);
-		Page<Itens> pages = itensRepository.findAll(pageRequest);
+		Page<Itens> pages = itensRepository.myFindAll(status,pageRequest);
 		return pages.map(x -> new ItensDTO(x));
 	}
 	
