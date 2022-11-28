@@ -11,6 +11,7 @@ export default function Lista() {
 
     const historys = useNavigate();
     const idColaborador = localStorage.getItem('CafeManha')
+    const [valorSelect, setValorselect] = useState<string>()
 
     function sair() {
         localStorage.removeItem('CafeManha');
@@ -40,6 +41,27 @@ export default function Lista() {
 
     }, [])
 
+    function iserir(id: string) {
+        const values = {
+            "status": "1",
+            "colaborador": {
+                "id": idColaborador
+            }
+        }
+
+        axios.put(`${BASE_URL}/itens/${id}`, values, {
+            headers: {
+                Authorization: localStorage.getItem('CafeManhaAcesso')
+            }
+        })
+            .then(() => {
+                window.location.reload();
+            })
+            .catch(() => {
+                toast.warning("Selecione um item para iserir")
+            });
+    }
+
     return (
         <div className="container">
             <div className="containerPersonal">
@@ -47,16 +69,20 @@ export default function Lista() {
                     Meus Itens <br />
                 </h2>
 
-                <select>
+                <select onChange={(valor) => setValorselect(valor.target.value)}>
+                    <option>Selecione</option>
                     {
                         itemPaginado.content?.map(item => (
-                            <option key={item.id} value={item.nome}> {item.nome}</option>
+                            <option key={item.id} value={item.id}> {item.nome}</option>
                         ))
                     }
                 </select>
 
-                <button type="button" className="btnPersonalLista"> Inserir</button>
-                <button type="button" className="btnPersonalLista"> Atualizar</button>
+                <button type="button"
+                    className="btnPersonalLista"
+                    onClick={() => iserir(valorSelect!)}>
+                    Inserir
+                </button>
                 <button type="button"
                     className="btnPersonalLista"
                     onClick={sair}>

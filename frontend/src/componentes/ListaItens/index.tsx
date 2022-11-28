@@ -35,6 +35,27 @@ export default function ListaItens({
 
     }, [urlDoBanco])
 
+    function apagar(id: number) {
+        const values = {
+            "status": "0",
+            "colaborador": {
+                "id": 2
+            }
+        }
+
+        axios.put(`${BASE_URL}/itens/${id}`, values, {
+            headers: {
+                Authorization: localStorage.getItem('CafeManhaAcesso')
+            }
+        })
+            .then(() => {
+                window.location.reload();
+            })
+            .catch(() => {
+                toast.error("Error ao apagar Item!")
+            });
+    }
+
     return (
         <div className="table-responsive">
             <table className="table table-striped">
@@ -54,7 +75,8 @@ export default function ListaItens({
                                 <th scope="row">
                                     <button hidden={estadoBotao}
                                         type="button"
-                                        className="btnPersonal" >
+                                        className="btnPersonal"
+                                        onClick={() => apagar(item.id)}>
                                         Apagar
                                     </button>
                                 </th>

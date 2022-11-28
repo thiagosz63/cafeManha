@@ -44,14 +44,15 @@ public class DBService {
 		Itens it4 = new Itens(null, "suco de laranja", ItemStatus.NaoDisponivel, col3);
 		Itens it5 = new Itens(null, "suco de limão", ItemStatus.NaoDisponivel, col4);
 		Itens it6 = new Itens(null, "bolo de fuba", ItemStatus.Disponivel, col1);
+		Itens it7 = new Itens(null, "cuscus", ItemStatus.Disponivel, col1);
 
-		col1.getItens().addAll(Arrays.asList(it1,it6));
+		col1.getItens().addAll(Arrays.asList(it1,it6,it7));
 		col2.getItens().addAll(Arrays.asList(it2, it3));
 		col3.getItens().addAll(Arrays.asList(it4));
 		col4.getItens().addAll(Arrays.asList(it5));
 
 		colaboradorRepositorys.saveAll(Arrays.asList(col1, col2, col3, col4));
-		itensRepository.saveAll(Arrays.asList(it1, it2, it3, it4, it5,it6));
+		itensRepository.saveAll(Arrays.asList(it1, it2, it3, it4, it5,it6,it7));
 
 	}
 }
