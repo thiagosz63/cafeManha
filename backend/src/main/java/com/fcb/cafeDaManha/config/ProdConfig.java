@@ -29,5 +29,4 @@ public class ProdConfig {
 		dbService.instantiateTestDataBase();
 		return true;
 	}
-
 }
