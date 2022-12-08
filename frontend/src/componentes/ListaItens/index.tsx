@@ -1,7 +1,9 @@
 import axios from "axios";
+import Alerta from "componentes/Alerta";
+import ModalDinamico from "componentes/Modal";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { ItensPaginado } from "tipos/itens";
+import { Itens, ItensPaginado } from "tipos/itens";
 import { BASE_URL } from "utils/requests";
 
 interface props {
@@ -20,6 +22,10 @@ export default function ListaItens({
         first: true,
     });
 
+    const [chamarModal, setChamarModal] = useState(false);
+    const fecharModal = () => setChamarModal(false);
+    const [itens, setItens] = useState<Itens>();
+
     useEffect(() => {
         axios.get(`${BASE_URL}/itens${urlDoBanco}&linesPage=10&page=0`, {
             headers: {
@@ -32,28 +38,11 @@ export default function ListaItens({
             .catch((res) => {
                 toast.error(res.response.data.message)
             });
-
     }, [urlDoBanco])
 
-    function apagar(id: number) {
-        const values = {
-            "status": "0",
-            "colaborador": {
-                "id": 2
-            }
-        }
-
-        axios.put(`${BASE_URL}/itens/${id}`, values, {
-            headers: {
-                Authorization: localStorage.getItem('CafeManhaAcesso')
-            }
-        })
-            .then(() => {
-                window.location.reload();
-            })
-            .catch(() => {
-                toast.error("Error ao apagar Item!")
-            });
+    function apagar(itens: Itens) {
+        setItens(itens)
+        setChamarModal(true)
     }
 
     return (
@@ -70,15 +59,20 @@ export default function ListaItens({
                 <tbody>
                     {
                         itemPaginado.content?.map(item => (
-
                             <tr key={item.id}>
                                 <th scope="row">
                                     <button hidden={estadoBotao}
                                         type="button"
                                         className="btnPersonal"
-                                        onClick={() => apagar(item.id)}>
+                                        onClick={() => apagar(item)}>
                                         Apagar
                                     </button>
+                                    {chamarModal ? <ModalDinamico show={chamarModal}
+                                        fechaModal={fecharModal}
+                                        children={
+                                            <Alerta fechaModal={fecharModal}
+                                                itens={itens!} />} /> : null
+                                    }
                                 </th>
                                 <td>{item.colaborador.nome} </td>
                                 <td>{item.colaborador.cpf}</td>

@@ -1,6 +1,5 @@
 package com.fcb.cafeDaManha.config;
 
-
 import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.fcb.cafeDaManha.service.DBService;
-
 
 @Configuration
 @Profile("dev")
@@ -23,7 +21,7 @@ public class DevConfig {
 	private String strategy;
 
 	@Bean
-	public Boolean instantiateDataBase() throws ParseException {
+	Boolean instantiateDataBase() throws ParseException {
 
 		if (!"create".equals(strategy)) {
 			return false;
@@ -32,5 +30,4 @@ public class DevConfig {
 		return true;
 	}
 
-	
 }

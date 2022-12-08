@@ -39,43 +39,32 @@ public class SecurityConfig {
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private JWTUtil jwtUtil;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	private static final String[] PUBLIC_MATCHERS = {
-			"/h2-console/**",
-	};
-	private static final String[] PUBLIC_MATCHERS_POST = {
-			"/colaborador",
-	};
+	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**", };
+	private static final String[] PUBLIC_MATCHERS_POST = { "/colaborador", };
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		if (Arrays.asList(environment.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-		http.cors()
-			.and()
-			.csrf()
-			.disable()
-			.authorizeRequests()
-			.antMatchers(PUBLIC_MATCHERS).permitAll()
-			.antMatchers(HttpMethod.POST,PUBLIC_MATCHERS_POST).permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
-			.and()
-			.addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil))
-			.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUtil, userDetailsService))
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.cors().and().csrf().disable().authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll()
+				.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll().anyRequest().authenticated().and()
+				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil))
+				.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUtil, userDetailsService))
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		return http.build();
 	}
-	
+
 	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
@@ -89,13 +78,13 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
-    public AuthenticationEntryPoint authenticationEntryPoint(){
-        return new JWTAuthenticationFailureHandler();
-    }
+	AuthenticationEntryPoint authenticationEntryPoint() {
+		return new JWTAuthenticationFailureHandler();
+	}
 
 }
